@@ -1,0 +1,35 @@
+server:
+  port: 9093
+  context-path: /api/v1
+  tomcat:
+    max-swallow-size: 50MB
+
+
+spring:
+  config:
+    import: optional:.env[.properties]
+  servlet:
+    context-path: /api/v1
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:9090}/${DB_NAME:epub-library}
+    username: ${POSTGRES_USER:hp}
+    password: ${POSTGRES_PW:elo}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
