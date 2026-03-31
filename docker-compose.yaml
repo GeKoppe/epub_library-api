@@ -1,32 +1,31 @@
 services:
   api:
-    image: epub-library:1.0.0
+    image: ghcr.io/gekoppe/epub-library-api:latest
     environment:
-      - LIBRARY_DATA_PATH=/data/epub-library
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - DB_NAME=epub-lib
-      - POSTGRES_USER=hp
-      - POSTGRES_PW=elo
-      - API_PORT=9093
-      - API_ADMIN_USER=admin
-      - API_ADMIN_PW=elo
+      - LIBRARY_DATA_PATH=/data/epub-library # Path in the container the epub files should be stored
+      - POSTGRES_HOST=db # Name of the database container or host
+      - POSTGRES_PORT=5432 # Port of the database
+      - DB_NAME=epub-lib # Name of the database
+      - POSTGRES_USER=epub # Name of the database user
+      - POSTGRES_PW=epub # Password of the database user
+      - API_PORT=9093 # Port the application should run on
+      - API_ADMIN_USER=admin # Default administrative user of the application
+      - API_ADMIN_PW=admin # Password for the administrative user
     ports:
-      - 9093:9093
+      - 9093:9093 # Expose port the application is running on if necessary
     volumes:
-      - librarydata:/data/epub-library
+      - librarydata:/data/epub-library # Mount the library data path as volume
     depends_on:
       - db
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=hp
-      - POSTGRES_PASSWORD=elo
+      - POSTGRES_USER=epub
+      - POSTGRES_PASSWORD=epub
       - POSTGRES_DB=epub-lib
-      - POSTGRES_AUTH_METHOD=trust
     volumes:
       - epubdb:/var/lib/postgresql/data
-  adminer:
+  adminer: # this container is only necessary, if you want to manage the database
     image: adminer:latest
     container_name: adminer
     ports:

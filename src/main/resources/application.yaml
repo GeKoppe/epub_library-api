@@ -14,9 +14,9 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:9090}/${DB_NAME:epub-library}
-    username: ${POSTGRES_USER:hp}
-    password: ${POSTGRES_PW:elo}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${DB_NAME:epub-lib}
+    username: ${POSTGRES_USER:epub}
+    password: ${POSTGRES_PW:epub}
     driver-class-name: org.postgresql.Driver
 
   jpa:

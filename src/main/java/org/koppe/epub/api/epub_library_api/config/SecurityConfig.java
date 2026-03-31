@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         exchange -> exchange
                                 .requestMatchers("/auth/login", "/auth/refresh", "/v1/api-docs/**", "/v3/api-docs/**",
-                                        "/swagger-ui/**")
+                                        "/swagger-ui/**", "/releases", "/releases/**")
                                 .permitAll().anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
                     res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

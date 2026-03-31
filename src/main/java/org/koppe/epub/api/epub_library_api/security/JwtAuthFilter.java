@@ -79,6 +79,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 path.contains("/auth/refresh") ||
                 path.contains("/v1/api-docs") ||
                 path.contains("/v3/api-docs") ||
+                path.contains("/releases") ||
                 path.contains("/swagger-ui");
     }
 
