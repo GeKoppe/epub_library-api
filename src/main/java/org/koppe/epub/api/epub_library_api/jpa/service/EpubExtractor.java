@@ -81,11 +81,19 @@ public class EpubExtractor {
         metadata.setBookId(meta.getIdentifiers().get(0).getValue());
         logger.debug("Extracted book id {}", metadata.getBookId());
 
-        metadata.setInternalTitle(meta.getFirstTitle());
-        logger.debug("Extracted internal title {}", metadata.getInternalTitle());
+        try {
+            metadata.setInternalTitle(meta.getFirstTitle());
+            logger.debug("Extracted internal title {}", metadata.getInternalTitle());
+        } catch (Exception ex) {
+            logger.info("Could not extract internal title");
+        }
 
-        metadata.setPublisher(meta.getPublishers().get(0));
-        logger.debug("Extracted publisher {}", metadata.getPublisher());
+        try {
+            metadata.setPublisher(meta.getPublishers().get(0));
+            logger.debug("Extracted publisher {}", metadata.getPublisher());
+        } catch (Exception ex) {
+            logger.info("Could not get publisher from epub");
+        }
 
         if (meta.getLanguage().contains("de"))
             metadata.setLanguage(LanguageC.GERMAN);
@@ -114,7 +122,7 @@ public class EpubExtractor {
 
         try {
             downloadCoverImage(book);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.warn("Exception occurred while downloading cover image", ex);
         }
         return metadata;

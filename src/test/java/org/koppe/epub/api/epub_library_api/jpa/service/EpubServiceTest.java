@@ -239,8 +239,7 @@ public class EpubServiceTest {
         when(editions.findAllByUploadGuid("321")).thenReturn(new HashSet<>());
 
         try (InputStream is = new FileInputStream(testEpub)) {
-            MultipartFile mpf = new MockMultipartFile("test.epub", is);
-
+            MultipartFile mpf = new MockMultipartFile("test.epub", "test.epub", "application/epub+zip", is);
             assertThrows(IllegalArgumentException.class, () -> srv.uploadEpub("321", mpf));
 
             assertTrue(srv.uploadEpub("123", mpf));
@@ -258,6 +257,14 @@ public class EpubServiceTest {
             fail();
         } catch (MediaTypeException e) {
             fail();
+        } finally {
+            File dir = new File(ed1.getBaseFilePath());
+            if (dir.exists()) {
+                for (var x : dir.list()) {
+                    new File(ed1.getBaseFilePath() + "/" + x).delete();
+                }
+                dir.delete();
+            }
         }
     }
 }
