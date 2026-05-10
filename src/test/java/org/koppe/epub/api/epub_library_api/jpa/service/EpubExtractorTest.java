@@ -28,7 +28,7 @@ public class EpubExtractorTest {
 
         Epub epub = new Epub(1L, "Test", LocalDate.of(2000, 1, 1), LocalDate.of(2000, 1, 1), new HashSet<>(),
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
-        ed = new EpubEdition(1L, "Test edition", file.getParent(), "1234", "4321", "test.epub", epub, null);
+        ed = new EpubEdition(1L, "Test edition", file.getParent(), "1234", "4321", "test.epub", "", epub, null);
     }
 
     @AfterAll

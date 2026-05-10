@@ -54,9 +54,14 @@ public class EpubEdition {
     @Column(name = "original_file_name", nullable = true)
     @lombok.ToString.Include
     private String originalFileName;
+    
+    @Column(name = "md5", nullable = false)
+    @Include
+    @lombok.ToString.Include
+    private String md5Hash;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "epub_id", nullable = false)
+    @JoinColumn(name = "epub_id", nullable = true)
     private Epub epub;
 
     @OneToOne(optional = true, mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

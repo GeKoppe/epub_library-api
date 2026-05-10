@@ -79,7 +79,7 @@ public class EpubServiceTest {
 
         m1 = new EpubMetadata(1L, 1, "Test", "Test", "Test", LanguageC.ENGLISH, List.of(t1, t2), null);
         ed1 = new EpubEdition(1L, "First edition", testEpub.getParentFile().getAbsolutePath() + "/test", "123", "321",
-                "Original file name", null, m1);
+                "Original file name", "", null, m1);
 
         e1 = new Epub(1L, "Test", LocalDate.of(2000, 1, 1), LocalDate.of(2000, 1, 1), null, null, Set.of(ed1),
                 new HashSet<>(), new HashSet<>(), new HashSet<>());
@@ -245,7 +245,7 @@ public class EpubServiceTest {
             assertTrue(srv.uploadEpub("123", mpf));
             assertTrue(new File(ed1.getBaseFilePath() + "/cover.jpg").exists());
             assertTrue(new File(ed1.getBaseFilePath() + "/book.epub").exists());
-
+            
             File dir = new File(ed1.getBaseFilePath());
             if (dir.exists()) {
                 for (var x : dir.list()) {

@@ -29,8 +29,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -402,6 +404,31 @@ public class EpubService {
         return edop.toArray(EpubEdition[]::new)[0];
     }
 
+    // #region find edition by md5
+    /**
+     * Returns the epub edition associated with the given md5 hash or null, if no
+     * such edition exists.
+     * 
+     * @param md5 MD5 hash of the .epub file to find in the system
+     * @return The associated epub edition or null, if no such edition exists.
+     * @throws IllegalArgumentException If no md5 is given
+     */
+    public EpubEdition findEditionByMd5Hash(@NotNull String md5) throws IllegalArgumentException {
+        if (md5 == null || md5.isBlank()) {
+            logger.info("No md5 to find given");
+            throw new IllegalArgumentException("Missing md5 hash");
+        }
+
+        md5 = md5.toUpperCase();
+        Optional<EpubEdition> edop = editions.findByMd5Hash(md5);
+        if (edop.isEmpty()) {
+            logger.info("No edition with given md5 exists");
+            return null;
+        }
+
+        return edop.get();
+    }
+
     // #region update edition name
     /**
      * Updates version name of an edition
@@ -578,11 +605,14 @@ public class EpubService {
         // Executors.newFixedThreadPool(1).submit(() -> {
         EpubExtractor ex = new EpubExtractor(epub, edition);
         EpubMetadata extractedMetadata = ex.extract();
+
         if (metadata == null) {
             logger.info("Metadata could not be extracted");
             cleanup(edition);
             return false;
         }
+
+        edition.setMd5Hash(DigestUtils.md5DigestAsHex(file.getBytes()).toUpperCase());
         editions.save(edition);
 
         metadata.save(extractedMetadata);
